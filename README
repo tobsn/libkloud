@@ -1,0 +1,5 @@
+libkloud - a unified interface into the cloud in php
+
+The goal of this project is to create a basic yet functional standard library into various cloud providers using php.
+
+NOTE: libcloud is currently under heavy development, this is not production ready software!
