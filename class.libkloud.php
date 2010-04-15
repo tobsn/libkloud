@@ -14,14 +14,14 @@ class libkloud {
 	    if( @require_once( $this->drivers_folder.'class.driver.php' ) ) {
 	        foreach( $providers as $provider => $credentials ) {
 		    if( in_array( $provider, $this->drivers ) ) {
-		        $this->providers[$provider] = $this->drivers_load( $provider, $credentials );
+			 $this->drivers_load( $provider, $credentials );
 		    }
 		}
 	    }
 	}
     }
     
-    public function __call( $func, $args ) {
+    private function __call( $func, $args ) {
 	$return = array();
 	foreach( array_keys( $this->providers ) as $provider ) {
 	    if( method_exists( $this->providers[$provider], $func ) ) {
@@ -32,11 +32,22 @@ class libkloud {
     }
     
     private function drivers_load( $provider, $credentials ) {
-	if( @require_once( $this->drivers_folder.'class.driver.'.$provider.'.php' ) ) {
-	    $provider = 'driver_'.$provider;
-	    return new $provider( $this, $credentials );
+	if( @include_once( $this->drivers_folder.'class.driver.'.$provider.'.php' ) ) {
+	    $class = 'driver_'.$provider;
+	    if( class_exists( $class ) ) {
+		$this->providers[$provider] = new $class( $this, $credentials );
+	    }
 	}
     }
+    
+    public function drivers_loaded() {
+	return array_keys( $this->providers );
+    }
+    
+    public function drivers_list() {
+	return $this->drivers;
+    }
+    
 }
 
 ?>

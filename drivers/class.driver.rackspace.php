@@ -1,7 +1,7 @@
 <?php
 
 class driver_rackspace extends driver {
-    public function list_nodes() {
+    public function node_list() {
 	return 'listing nodes for rackspace';
     }
 }
